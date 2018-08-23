@@ -1,12 +1,12 @@
 # LittleOwl
 
-[![Language: Swift](https://img.shields.io/badge/Swift-4.1-orange.svg?style=flat)](https://developer.apple.com/swift/)
 [![Build Status](https://travis-ci.org/DarkySwift/LittleOwl.svg?branch=master)](https://travis-ci.org/DarkySwift/LittleOwl)
-[![codecov](https://codecov.io/gh/DarkySwift/LittleOwl/branch/master/graph/badge.svg)](https://codecov.io/gh/DarkySwift/LittleOwl)
 [![Cocoa Pod](https://cocoapod-badges.herokuapp.com/v/LittleOwl/badge.png)](https://cocoapods.org/pods/LittleOwl)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/DarkySwift/LittleOwl/develop/LICENSE)
+[![Language: Swift](https://img.shields.io/badge/Swift-4.1-orange.svg?style=flat)](https://developer.apple.com/swift/)
+[![codecov](https://codecov.io/gh/DarkySwift/LittleOwl/branch/master/graph/badge.svg)](https://codecov.io/gh/DarkySwift/LittleOwl)
 [![Platform](https://img.shields.io/badge/platform-iOS-orange.svg?style=flat)]()
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/DarkySwift/LittleOwl/develop/LICENSE)
 [![Author: carlos21](https://img.shields.io/badge/author-carlos21-blue.svg?style=flat)](https://www.linkedin.com/in/carlos-duclos-caballero-5b1aa520/)
 
 ## Requirements

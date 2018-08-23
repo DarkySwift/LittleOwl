@@ -1,4 +1,4 @@
-# Owl
+# LittleOwl
 
 [![Language: Swift](https://img.shields.io/badge/Swift-4.1-orange.svg?style=flat)](https://developer.apple.com/swift/)
 [![Build Status](https://travis-ci.org/DarkySwift/LittleOwl.svg?branch=master)](https://travis-ci.org/DarkySwift/LittleOwl)
@@ -10,7 +10,7 @@
 
 ## Requirements
 
-- Swift 3.0 or later
+- Swift 3.2 or later
 - iOS 8.0 or later
 
 #### [Carthage](https://github.com/Carthage/Carthage)
@@ -24,9 +24,46 @@
 - Insert `pod 'LittleOwl', '~> 1.0'` to your Podfile.
 - Run `pod install`.
 
+### Prerequisites:
+
+As of iOS 10, Apple requires the additon of the `NSCameraUsageDescription` and `NSMicrophoneUsageDescription` strings to the info.plist of your application. Example:
+
+```xml
+<key>NSCameraUsageDescription</key>
+<string>To Take Photos and Video</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>To Record Audio With Video</string>
+```
+
+### Getting Started:
+
+If you install SwiftyCam from Cocoapods, be sure to import the module into your View Controller:
+
+```swift
+import LittleOwl
+```
+
+LittleOwl is a drop-in convenience framework. To create a Camera instance, just add this:
+
+```swift
+let cameraController = CameraViewController(type: .video(10))
+cameraController.didSelectVideo = { url in
+    cameraController.dismiss(animated: true, completion: nil)
+}
+```
+or
+
+```swift
+let cameraController = CameraViewController(type: .photo)
+cameraController.didSelectPhoto = { image in
+    cameraController.dismiss(animated: true, completion: nil)
+}
+
+That is all that is required to setup the AVSession for photo and video capture. LittleOwl will prompt the user for permission to use the camera/microphone, and configure both the device inputs and outputs.
+
 ## Author
 
-Carlos Duclos, darkzeratul64@gmail.com
+Carlos Duclós
 
 ## License
 

@@ -9,3 +9,6 @@ script:
 
   # Compile with Xcodex
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean test -workspace Example/LittleOwl.xcworkspace -scheme LittleOwl-Example -destination "platform=iOS Simulator,name=iPhone X" -sdk iphonesimulator -enableCodeCoverage YES ; fi
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash) -J 'LittleOwl'

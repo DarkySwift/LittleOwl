@@ -58,6 +58,7 @@ let cameraController = CameraViewController(type: .photo)
 cameraController.didSelectPhoto = { image in
     cameraController.dismiss(animated: true, completion: nil)
 }
+```
 
 That is all that is required to setup the AVSession for photo and video capture. LittleOwl will prompt the user for permission to use the camera/microphone, and configure both the device inputs and outputs.
 

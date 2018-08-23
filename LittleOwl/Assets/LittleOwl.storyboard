@@ -50,7 +50,7 @@
         <!--Camera View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="CameraViewController" id="BYZ-38-t0r" customClass="CameraViewController" customModule="Owl" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CameraViewController" id="BYZ-38-t0r" customClass="CameraViewController" customModule="LittleOwl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -59,7 +59,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uG3-Tl-VJq" customClass="PreviewView" customModule="Owl">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uG3-Tl-VJq" customClass="PreviewView" customModule="LittleOwl" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Instructions" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NKw-sX-Tn3">
@@ -74,7 +74,7 @@
                                     <constraint firstItem="NKw-sX-Tn3" firstAttribute="centerX" secondItem="uG3-Tl-VJq" secondAttribute="centerX" id="Nug-G4-pEm"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BfT-xI-8X9" customClass="CameraButton" customModule="Owl">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BfT-xI-8X9" customClass="CameraButton" customModule="LittleOwl" customModuleProvider="target">
                                 <rect key="frame" x="152" y="537" width="70" height="70"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -106,7 +106,7 @@
                                     <action selector="toggleCameraTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BsQ-br-xWt"/>
                                 </connections>
                             </button>
-                            <view alpha="0.75" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BHb-sw-85y" userLabel="Counter View" customClass="CounterView" customModule="Owl">
+                            <view alpha="0.75" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BHb-sw-85y" userLabel="Counter View" customClass="CounterView" customModule="LittleOwl" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -172,7 +172,7 @@
         <!--Video View Controller-->
         <scene sceneID="qAe-rA-uuw">
             <objects>
-                <viewController storyboardIdentifier="VideoViewController" modalPresentationStyle="currentContext" id="crL-BQ-n0G" customClass="VideoViewController" customModule="Owl" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VideoViewController" modalPresentationStyle="currentContext" id="crL-BQ-n0G" customClass="VideoViewController" customModule="LittleOwl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="IVi-Zz-eRm"/>
                         <viewControllerLayoutGuide type="bottom" id="rLg-Jt-aBG"/>
@@ -226,7 +226,7 @@
         <!--Photo View Controller-->
         <scene sceneID="RmL-zn-1ZJ">
             <objects>
-                <viewController storyboardIdentifier="PhotoViewController" modalPresentationStyle="currentContext" id="W1d-AR-N44" customClass="PhotoViewController" customModule="Owl" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PhotoViewController" modalPresentationStyle="currentContext" id="W1d-AR-N44" customClass="PhotoViewController" customModule="LittleOwl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="A9d-k2-9Fo"/>
                         <viewControllerLayoutGuide type="bottom" id="FxI-bb-zTA"/>

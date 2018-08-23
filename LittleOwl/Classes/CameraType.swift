@@ -9,5 +9,27 @@ import Foundation
 
 public enum CameraType {
     case photo
-    case video
+    case video(Int)
+    
+    var maxDuration: Int {
+        switch self {
+        case .photo: return 0
+        case .video(let duration): return duration
+        }
+    }
+    
+    var isVideo: Bool {
+        switch self {
+        case .photo: return false
+        case .video: return true
+        }
+    }
+      
+    var isPhoto: Bool {
+        switch self {
+        case .photo: return true
+        case .video: return false
+        }
+    }
+        
 }

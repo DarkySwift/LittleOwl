@@ -7,9 +7,11 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'LittleOwl'
-  s.version          = '0.1.0'
-  s.summary          = 'A short description of LittleOwl.'
+    s.name             = 'LittleOwl'
+    s.version          = '1.0'
+    s.summary          = 'A customized camera controller using AVFoundation'
+    s.resources        = 'LittleOwl/Assets/*'
+    s.swift_version    = '4.1'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -17,26 +19,21 @@ Pod::Spec.new do |s|
 #   * Write the description between the DESC delimiters below.
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
-  s.description      = <<-DESC
-TODO: Add long description of the pod here.
-                       DESC
+    s.description      = <<-DESC
+    A customized camera controller using AVFoundation with a cool button animation as Snapchat has.
+    DESC
 
-  s.homepage         = 'https://github.com/Carlos Duclos/LittleOwl'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
-  s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'Carlos Duclos' => 'darkzeratul64@gmail.com' }
-  s.source           = { :git => 'https://github.com/Carlos Duclos/LittleOwl.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+    s.homepage         = 'https://github.com/DarkySwift/LittleOwl'
+    # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
+    s.license          = { :type => 'MIT', :file => 'LICENSE' }
+    s.author           = { 'Carlos Duclos' => 'darkzeratul64@gmail.com' }
+    s.source           = { :git => 'https://github.com/DarkySwift/LittleOwl.git', :tag => s.version.to_s }
 
-  s.ios.deployment_target = '8.0'
+    s.ios.deployment_target = '8.0'
 
-  s.source_files = 'LittleOwl/Classes/**/*'
-  
-  # s.resource_bundles = {
-  #   'LittleOwl' => ['LittleOwl/Assets/*.png']
-  # }
+    s.source_files = 'LittleOwl/Classes/**/*'
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+    s.resource_bundles = {
+    'Owl' => ['LittleOwl/Assets/**/*.{storyboard,xib,xcassets,imageset,png,jpg}']
+    }
 end

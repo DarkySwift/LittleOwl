@@ -1,0 +1,10 @@
+/* 
+  LittleOwl.strings
+  Pods
+
+  Created by Carlos Duclos on 8/22/18.
+  
+*/
+
+"camera.instructions.pressandhold" = "Mantén presionado para empezar a grabar.";
+"camera.instructions.tap" = "Haz un tap en el botón para tomar una foto.";

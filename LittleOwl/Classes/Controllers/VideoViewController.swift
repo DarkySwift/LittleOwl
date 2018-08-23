@@ -78,5 +78,14 @@ class VideoViewController: UIViewController {
         let playerItem = notification.object as? AVPlayerItem
         playerItem?.seek(to: kCMTimeZero)
     }
+    
+    public static func `init`(videoURL: URL) -> VideoViewController {
+        let identifier = String(describing: VideoViewController.self)
+        let bundle = Bundle(for: VideoViewController.self)
+        let storyboard = UIStoryboard(name: "LittleOwl", bundle: bundle)
+        let videoController = storyboard.instantiateViewController(withIdentifier: identifier) as! VideoViewController
+        videoController.videoURL = videoURL
+        return videoController
+    }
 
 }

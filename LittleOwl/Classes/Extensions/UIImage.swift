@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 func CGRectCenteredInRect(rect: CGRect, mainRect: CGRect) -> CGRect {
     let xOffset: CGFloat = mainRect.midX - rect.midX
@@ -30,6 +31,11 @@ func CGRectAspectFillRect(sourceSize: CGSize, destRect: CGRect) -> CGRect {
     let dHeight: CGFloat = (destSize.height - newHeight) / 2.0
     let rect = CGRect(x: dWidth, y: dHeight, width: newWidth, height: newHeight)
     return rect
+}
+
+func imageNamed(_ name: String) -> UIImage? {
+    let bundle = Bundle(for: CameraViewController.self)
+    return UIImage(named: name, in: bundle, compatibleWith: nil)
 }
 
 extension UIImage {

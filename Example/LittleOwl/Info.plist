@@ -35,5 +35,9 @@
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 	</array>
+    <key>NSCameraUsageDescription</key>
+    <string>To attach a photo to your feedback, we need access to your Camera.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>To attach a video to your feedback, we need access to your microphone.</string>
 </dict>
 </plist>

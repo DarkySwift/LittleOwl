@@ -14,27 +14,33 @@ public class CameraViewController: UIViewController {
     
     // MARK: - Properties
     
-    @IBOutlet weak var cameraButton: CameraButton!
-    @IBOutlet weak var toggleCameraButton: UIButton!
-    @IBOutlet weak var toggleFlashButton: UIButton!
-    @IBOutlet weak var closeButton: UIButton!
-    @IBOutlet weak var instructionsLabel: UILabel!
-    @IBOutlet weak var tappableView: UIView!
-    @IBOutlet weak var previewView: PreviewView!
-    @IBOutlet weak var counterView: CounterView!
+    @IBOutlet private weak var cameraButton: CameraButton!
+    @IBOutlet private weak var toggleCameraButton: UIButton!
+    @IBOutlet private weak var toggleFlashButton: UIButton!
+    @IBOutlet private weak var closeButton: UIButton!
+    @IBOutlet private weak var instructionsLabel: UILabel!
+    @IBOutlet private weak var tappableView: UIView!
+    @IBOutlet private weak var previewView: PreviewView!
+    @IBOutlet private weak var counterView: CounterView!
     
-    var videoDevice: AVCaptureDevice?
-    var videoInputDevice: AVCaptureDeviceInput?
-    var audioInputDevice: AVCaptureDeviceInput?
-    var movieFileOutput: AVCaptureMovieFileOutput?
-    var photoFileOutput: AVCaptureStillImageOutput?
-    var sessionQueue = DispatchQueue(label: "com.carlosduclos.videotest", qos: .background, attributes: .concurrent)
-    var useFrontCamera = false
-    var useFlash = false
-    var statusBarWasHidden = false
+    private var videoDevice: AVCaptureDevice?
+    private var videoInputDevice: AVCaptureDeviceInput?
+    private var audioInputDevice: AVCaptureDeviceInput?
+    private var movieFileOutput: AVCaptureMovieFileOutput?
+    private var photoFileOutput: AVCaptureStillImageOutput?
+    private var sessionQueue = DispatchQueue(label: "com.carlosduclos.videotest", qos: .background, attributes: .concurrent)
+    private var useFrontCamera = false
+    private var useFlash = false {
+        didSet {
+            let imageName = useFlash ? "flash" : "flashOutline"
+            toggleFlashButton.setImage(imageNamed(imageName), for: .normal)
+        }
+    }
+    private var statusBarWasHidden = false
+    private var zoomScale: CGFloat = 0.0
+    
     var maxDuration: Int = 0
     var type: CameraType = .photo
-    var zoomScale: CGFloat = 0.0
     
     public var didSelectPhoto: ((UIImage?) -> Void)?
     public var didSelectVideo: ((URL?) -> Void)?
@@ -43,19 +49,11 @@ public class CameraViewController: UIViewController {
     private var deviceOrientation: UIDeviceOrientation {
         get {
             let statusBarOrientation: UIInterfaceOrientation = UIApplication.shared.statusBarOrientation
-            
             switch statusBarOrientation {
-            case .landscapeRight:
-                return .landscapeLeft
-                
-            case .landscapeLeft:
-                return .landscapeRight
-                
-            case .portraitUpsideDown:
-                return .portraitUpsideDown
-                
-            default:
-                return .portrait
+            case .landscapeRight: return .landscapeLeft
+            case .landscapeLeft: return .landscapeRight
+            case .portraitUpsideDown: return .portraitUpsideDown
+            default: return .portrait
             }
         }
         set { }
@@ -63,33 +61,19 @@ public class CameraViewController: UIViewController {
     
     private var videoOrientation: AVCaptureVideoOrientation {
         switch deviceOrientation {
-        case UIDeviceOrientation.landscapeLeft:
-            return .landscapeRight
-            
-        case UIDeviceOrientation.landscapeRight:
-            return .landscapeLeft
-            
-        case UIDeviceOrientation.portraitUpsideDown:
-            return .portraitUpsideDown
-            
-        default:
-            return .portrait
+        case UIDeviceOrientation.landscapeLeft: return .landscapeRight
+        case UIDeviceOrientation.landscapeRight: return .landscapeLeft
+        case UIDeviceOrientation.portraitUpsideDown: return .portraitUpsideDown
+        default: return .portrait
         }
     }
     
     private var imageOrientation: UIImageOrientation {
         switch deviceOrientation {
-        case UIDeviceOrientation.landscapeLeft:
-            return !useFrontCamera ? .up : .downMirrored
-            
-        case UIDeviceOrientation.landscapeRight:
-            return !useFrontCamera ? .down : .upMirrored
-            
-        case UIDeviceOrientation.portraitUpsideDown:
-            return !useFrontCamera ? .left : .rightMirrored
-            
-        default:
-            return !useFrontCamera ? .right : .leftMirrored
+        case UIDeviceOrientation.landscapeLeft: return !useFrontCamera ? .up : .downMirrored
+        case UIDeviceOrientation.landscapeRight: return !useFrontCamera ? .down : .upMirrored
+        case UIDeviceOrientation.portraitUpsideDown: return !useFrontCamera ? .left : .rightMirrored
+        default: return !useFrontCamera ? .right : .leftMirrored
         }
     }
     
@@ -99,22 +83,27 @@ public class CameraViewController: UIViewController {
         return session
     }()
     
-    func setUseFlash(_ useFlash: Bool) {
-        self.useFlash = useFlash
-        let imageName = self.useFlash ? "flash" : "flashOutline"
-        let bundle = Bundle(for: CameraViewController.self)
-        let image = UIImage(named: imageName, in: bundle, compatibleWith: nil)
-        toggleFlashButton.setImage(image, for: .normal)
-    }
+    // MARK: - Override
     
-    // MARK: = Properties
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+        
+    }
     
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setupView()
-        setupSession()
-        setupCameraButton()
-        setupGestures()
+        
+        let status = AVCaptureDevice.authorizationStatus(for: .video)
+        guard status == .authorized else {
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                DispatchQueue.main.async { [weak self] in
+                    guard granted == true else { self?.alert(message: "Permissions were not granted to use the camera."); return }
+                    self?.setup()
+                }
+            }; return
+        }
+        
+        setup()
     }
 
     override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -129,13 +118,21 @@ public class CameraViewController: UIViewController {
         stopRecording()
     }
     
-    deinit {
-        NotificationCenter.default.removeObserver(self)
+    // MARK: - Methods
+    
+    private func checkPermission() {
+        
     }
     
-    func setupView() {
-        let bundle = Bundle(for: CameraViewController.self)
-        let imageDisabled = UIImage(named: "flashOutlineDisabled", in: bundle, compatibleWith: nil)
+    private func setup() {
+        setupView()
+        setupSession()
+        setupCameraButton()
+        setupGestures()
+    }
+    
+    private func setupView() {
+        let imageDisabled = imageNamed("flashOutlineDisabled")
         
         toggleFlashButton.setImage(imageDisabled, for: .disabled)
         view.backgroundColor = UIColor.red
@@ -147,24 +144,14 @@ public class CameraViewController: UIViewController {
         if UIDevice.current.orientation != .faceUp && UIDevice.current.orientation != .faceDown {
             deviceOrientation = UIDevice.current.orientation
         }
-        
-        let languages = ["en", "es"]
-        var lang = NSLocale.current.languageCode
-        if !(languages.contains(lang ?? "")) {
-            lang = "en"
-        }
-        
-        let table = "Owl_\(lang ?? "")"
+    
         switch type {
-        case .photo:
-            instructionsLabel.text = NSLocalizedString("camera_instructions_tap", tableName: table, bundle: bundle, comment: "")
-            
-        case .video:
-            instructionsLabel.text = NSLocalizedString("camera_instructions_press_and_hold", tableName: table, bundle: bundle, comment: "")
+        case .photo: instructionsLabel.text = localizedString("camera.instructions.tap")
+        case .video: instructionsLabel.text = localizedString("camera.instructions.pressandhold")
         }
     }
 
-    func setupGestures() {
+    private func setupGestures() {
         let zoomGesture = UIPinchGestureRecognizer()
         zoomGesture.addTarget(self, action: #selector(zoomGestureEvent(_:)))
         tappableView.addGestureRecognizer(zoomGesture)
@@ -173,7 +160,7 @@ public class CameraViewController: UIViewController {
         tappableView.addGestureRecognizer(doubleTapGesture)
     }
     
-    func setupSession() {
+    private func setupSession() {
         sessionQueue.async {
             self.configureSession()
             self.session.startRunning()
@@ -193,7 +180,7 @@ public class CameraViewController: UIViewController {
         }
     }
     
-    func setupCameraButton() {
+    private func setupCameraButton() {
         cameraButton.didReachMaximumDuration = {
             self.stopRecording()
         }
@@ -224,11 +211,8 @@ public class CameraViewController: UIViewController {
         addAudioInput()
         
         switch type {
-        case .photo:
-            addPhotoOutput()
-            
-        case .video:
-            addVideoOutput()
+        case .photo: addPhotoOutput()
+        case .video: addVideoOutput()
         }
         
         session.commitConfiguration()
@@ -245,7 +229,7 @@ public class CameraViewController: UIViewController {
         return nil
     }
     
-    func addAudioInput() {
+    private func addAudioInput() {
         guard audioInputDevice == nil else { return }
         
         if let audioDevice = AVCaptureDevice.default(for: .audio) {
@@ -259,16 +243,15 @@ public class CameraViewController: UIViewController {
         }
     }
     
-    func removeAudioInput() {
+    private func removeAudioInput() {
         if let audioInputDevice = self.audioInputDevice {
             session.removeInput(audioInputDevice)
             self.audioInputDevice = nil
         }
     }
     
-    func addVideoInput() {
+    private func addVideoInput() {
         let position: AVCaptureDevice.Position = useFrontCamera ? .front : .back
-        
         guard let device = self.device(from: .video, position: position) else { return }
         
         do {
@@ -309,7 +292,7 @@ public class CameraViewController: UIViewController {
         }
     }
 
-    func addVideoOutput() {
+    private func addVideoOutput() {
         let movieFileOutput = AVCaptureMovieFileOutput()
         let captureOutput = movieFileOutput as AVCaptureOutput
         if session.canAddOutput(captureOutput) {
@@ -322,7 +305,7 @@ public class CameraViewController: UIViewController {
         }
     }
     
-    func addPhotoOutput() {
+    private func addPhotoOutput() {
         let photoFileOutput = AVCaptureStillImageOutput()
         let captureOutput = photoFileOutput as AVCaptureOutput
         if session.canAddOutput(captureOutput) {
@@ -332,7 +315,7 @@ public class CameraViewController: UIViewController {
         }
     }
     
-    func changeFlashSettings(_ device: AVCaptureDevice, with mode: AVCaptureDevice.FlashMode) {
+    private func changeFlashSettings(_ device: AVCaptureDevice, with mode: AVCaptureDevice.FlashMode) {
         do {
             try device.lockForConfiguration()
             device.flashMode = mode
@@ -343,7 +326,7 @@ public class CameraViewController: UIViewController {
         }
     }
     
-    func processPhoto(with data: Data) -> UIImage? {
+    private func processPhoto(with data: Data) -> UIImage? {
         var image: UIImage? = nil
         data.withUnsafeBytes { (bytes: UnsafePointer<UInt8>) -> Void in
             guard let cfData = CFDataCreate(nil, bytes, data.count) else { return }
@@ -357,8 +340,7 @@ public class CameraViewController: UIViewController {
         return image
     }
     
-    func showPhotoController(_ image: UIImage) {
-        
+    private func showPhotoController(_ image: UIImage) {
         let photoController = PhotoViewController(image: image)
         photoController.didSelectPhoto = { [unowned self] image in
             photoController.removeFromParentViewController()
@@ -375,10 +357,8 @@ public class CameraViewController: UIViewController {
         photoController.didMove(toParentViewController: self)
     }
     
-    func showVideoController(_ videoURL: URL?) {
-        let identifier = String(describing: VideoViewController.self)
-        let videoController = storyboard?.instantiateViewController(withIdentifier: identifier) as! VideoViewController
-        videoController.videoURL = videoURL
+    private func showVideoController(_ videoURL: URL) {
+        let videoController = VideoViewController(videoURL: videoURL)
         videoController.didSelectVideo = { [unowned self] videoURL in
             videoController.removeFromParentViewController()
             videoController.view.removeFromSuperview()
@@ -387,27 +367,26 @@ public class CameraViewController: UIViewController {
             self.didSelectVideo?(videoURL)
         }
         
-        videoController.videoURL = videoURL
         videoController.willMove(toParentViewController: self)
         addChildViewController(videoController)
         view.addSubview(videoController.view)
         videoController.didMove(toParentViewController: self)
     }
 
-    func showUIElements(_ flag: Bool) {
+    private func showUIElements(_ flag: Bool) {
         let newAlpha: CGFloat = flag ? 1.0 : 0.0
         UIView.animate(withDuration: 0.2, animations: {
             self.closeButton.alpha = newAlpha
             self.instructionsLabel.alpha = newAlpha
             self.toggleCameraButton.alpha = newAlpha
             self.toggleFlashButton.alpha = newAlpha
-            if !flag && self.type == .video {
+            if !flag && self.type.isVideo {
                 self.counterView.alpha = 0.65
             }
         })
     }
     
-    func capturePhotoAsynchronously(completionHandler: ((_ success: Bool) -> Void)?) {
+    private func capturePhotoAsynchronously(completionHandler: ((_ success: Bool) -> Void)?) {
         guard let photoFileOutput = self.photoFileOutput else { return }
         
         let connection = photoFileOutput.connection(with: .video)
@@ -437,8 +416,8 @@ public class CameraViewController: UIViewController {
         }
     }
 
-    func enableFlash(_ flag: Bool) {
-        guard useFrontCamera == true, let videoDevice = self.videoDevice else { return }
+    private func enableFlash(_ flag: Bool) {
+        guard useFrontCamera == false, let videoDevice = self.videoDevice else { return }
         guard videoDevice.hasTorch else { return }
             
         do {
@@ -456,7 +435,7 @@ public class CameraViewController: UIViewController {
         }
     }
     
-    func startRecording() {
+    private func startRecording() {
         guard let movieFileOutput = self.movieFileOutput else { return }
         
         let videoOrientation = self.videoOrientation
@@ -479,7 +458,7 @@ public class CameraViewController: UIViewController {
         })
     }
 
-    func stopRecording() {
+    private func stopRecording() {
         guard let movieFileOutput = self.movieFileOutput else { return }
         sessionQueue.async(execute: {
             guard movieFileOutput.isRecording else { return }
@@ -488,7 +467,7 @@ public class CameraViewController: UIViewController {
         counterView.alpha = 0.0
     }
     
-    func takePhoto() {
+    private func takePhoto() {
         guard let videoDevice = self.videoDevice else { return }
         if !videoDevice.hasFlash && useFlash && useFrontCamera {
             
@@ -527,7 +506,7 @@ public class CameraViewController: UIViewController {
         capturePhotoAsynchronously(completionHandler: nil)
     }
 
-    func addInputs() {
+    private func addInputs() {
         session.beginConfiguration()
         session.sessionPreset = .high
         addVideoInput()
@@ -543,7 +522,7 @@ public class CameraViewController: UIViewController {
     
     @objc @IBAction func toggleCameraTapped(_ sender: Any) {
         useFrontCamera = !useFrontCamera
-        toggleFlashButton.isEnabled = !(type == .video && useFrontCamera)
+        toggleFlashButton.isEnabled = !(type.isVideo && useFrontCamera)
         session.stopRunning()
         sessionQueue.async {
             for input in self.session.inputs {
@@ -585,18 +564,20 @@ public class CameraViewController: UIViewController {
         }
     }
     
-    // MARK: - Public
+    // MARK: - Initialize
     
-    public static func `init`(type: CameraType, maxDuration: Int) -> CameraViewController {
+    public static func `init`(type: CameraType) -> CameraViewController {
         let identifier = String(describing: CameraViewController.self)
-        let storyboard = UIStoryboard(name: "Owl",
-                                      bundle: Bundle(for: CameraViewController.self))
+        let storyboard = UIStoryboard(name: "LittleOwl", bundle: Bundle(for: CameraViewController.self))
         let cameraController = storyboard.instantiateViewController(withIdentifier: identifier) as! CameraViewController
         cameraController.type = type
-        cameraController.maxDuration = maxDuration
+        cameraController.maxDuration = type.maxDuration
         return cameraController
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
 
 extension CameraViewController: AVCaptureFileOutputRecordingDelegate {
@@ -611,7 +592,7 @@ extension CameraViewController: AVCaptureFileOutputRecordingDelegate {
                            didFinishRecordingTo outputFileURL: URL,
                            from connections: [AVCaptureConnection],
                            error: Error?) {
-        print("error", error)
+        print("error", error?.localizedDescription ?? "")
         enableFlash(false)
         OperationQueue.main.addOperation {
             self.showVideoController(outputFileURL)

@@ -1,5 +1,5 @@
 PODS:
-  - LittleOwl (0.1.0)
+  - LittleOwl (1.0)
 
 DEPENDENCIES:
   - LittleOwl (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  LittleOwl: 43f6c6069057946e897b80ec9f4723a7e6afb197
+  LittleOwl: 610bc704fdfa9b61ae982c31c1befc428f8a40ee
 
 PODFILE CHECKSUM: e1e5db840ff617eb20ddaf8811ffdbd42d7cbb71
 

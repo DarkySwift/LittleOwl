@@ -45,7 +45,7 @@ class PhotoViewController: UIViewController {
     public static func `init`(image: UIImage) -> PhotoViewController {
         let identifier = String(describing: PhotoViewController.self)
         let bundle = Bundle(for: PhotoViewController.self)
-        let storyboard = UIStoryboard(name: "Owl", bundle: bundle)
+        let storyboard = UIStoryboard(name: "LittleOwl", bundle: bundle)
         let photoController = storyboard.instantiateViewController(withIdentifier: identifier) as! PhotoViewController
         photoController.image = image
         return photoController

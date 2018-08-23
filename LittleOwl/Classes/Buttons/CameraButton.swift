@@ -63,7 +63,7 @@ class CameraButton: UIButton {
     // MARK: - Actions
     
     @objc func longPressEvent(_ gesture: UILongPressGestureRecognizer) {
-        guard type == .video else { return }
+        guard case .video = type else { return }
         
         if gesture.state == .began {
             startTimer()
@@ -78,7 +78,7 @@ class CameraButton: UIButton {
     }
     
     @objc func tapEvent(_ gesture: UITapGestureRecognizer) {
-        guard type == .photo else { return }
+        guard case .photo = type else { return }
         didTap?()
     }
     

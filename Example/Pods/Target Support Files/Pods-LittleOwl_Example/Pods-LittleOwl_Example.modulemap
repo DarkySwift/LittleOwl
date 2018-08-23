@@ -1,0 +1,6 @@
+framework module Pods_LittleOwl_Example {
+  umbrella header "Pods-LittleOwl_Example-umbrella.h"
+
+  export *
+  module * { export * }
+}

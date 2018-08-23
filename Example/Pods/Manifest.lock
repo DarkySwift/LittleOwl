@@ -1,0 +1,16 @@
+PODS:
+  - LittleOwl (0.1.0)
+
+DEPENDENCIES:
+  - LittleOwl (from `../`)
+
+EXTERNAL SOURCES:
+  LittleOwl:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  LittleOwl: 43f6c6069057946e897b80ec9f4723a7e6afb197
+
+PODFILE CHECKSUM: e1e5db840ff617eb20ddaf8811ffdbd42d7cbb71
+
+COCOAPODS: 1.5.3

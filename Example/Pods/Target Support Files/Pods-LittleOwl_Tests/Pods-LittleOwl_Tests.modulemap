@@ -1,0 +1,6 @@
+framework module Pods_LittleOwl_Tests {
+  umbrella header "Pods-LittleOwl_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}

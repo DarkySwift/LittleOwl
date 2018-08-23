@@ -1,0 +1,6 @@
+framework module LittleOwl {
+  umbrella header "LittleOwl-umbrella.h"
+
+  export *
+  module * { export * }
+}

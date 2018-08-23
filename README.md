@@ -61,6 +61,9 @@ cameraController.didSelectPhoto = { image in
 }
 ```
 
+![Image 1](IMG_4623.PNG?raw=true)
+![Image 2](IMG_4622.PNG?raw=true)
+
 That is all that is required to setup the AVSession for photo and video capture. LittleOwl will prompt the user for permission to use the camera/microphone, and configure both the device inputs and outputs.
 
 ## Author

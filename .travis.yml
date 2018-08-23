@@ -8,4 +8,4 @@ matrix:
 script:
 
   # Compile with Xcodex
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean test -workspace Example/LittleOwl.xcworkspace -scheme Owl-Example -destination "platform=iOS Simulator,name=iPhone X" -sdk iphonesimulator -enableCodeCoverage YES ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean test -workspace Example/LittleOwl.xcworkspace -scheme LittleOwl-Example -destination "platform=iOS Simulator,name=iPhone X" -sdk iphonesimulator -enableCodeCoverage YES ; fi

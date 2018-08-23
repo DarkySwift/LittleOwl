@@ -5,7 +5,7 @@
 [![Cocoa Pod](https://img.shields.io/cocoapods/v/Pod-1.0-blue.svg?style=flat)](https://cocoapods.org/pods/LittleOwl)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/DarkySwift/LittleOwl/develop/LICENSE)
 [![Platform](https://img.shields.io/badge/platform-iOS-orange.svg?style=flat)]()
-[![Author: carlos21](https://img.shields.io/badge/author-vmartinelli-blue.svg?style=flat)](https://www.linkedin.com/in/carlos-duclos-caballero-5b1aa520/)
+[![Author: carlos21](https://img.shields.io/badge/author-carlos21-blue.svg?style=flat)](https://www.linkedin.com/in/carlos-duclos-caballero-5b1aa520/)
 
 ## Example
 
